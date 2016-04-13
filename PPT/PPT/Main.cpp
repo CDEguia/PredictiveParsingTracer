@@ -34,12 +34,11 @@ int main()
 	
 	char again;
 	do {
-		string w, stack = "$E";		//w will hold the string of the individual words to check
-		//char pop;
-		cout << "Enter a equation ending with '$' i.e. (i+i)*i$ : "; cin >> w;
-		//loop through the words in the text file
+		string w, stack = "$E";		//w will hold input string
 
-			//initialize values		
+		cout << "Enter a equation ending with '$' i.e. (i+i)$ : "; cin >> w;
+
+		// initialize values		
 		int i = 0, col, state = 0;
 		//will loop through the letters in the word until it encounters a '$'
 		while (w[i] != '$')
@@ -48,12 +47,10 @@ int main()
 			cout << "\nRead: " << w[i] << endl;
 			cout << "Stack\tPoped\tPushed\n";
 			cout << stack << "\t";
-			//pop = stack.back();		// set pop to last char
-			//stack.pop_back();		// remove last char
 			cout << stack.back() << "\t";
 			while (stack.back() != w[i]) {
-				if (stack.back() != 'L') {
-					switch (stack.back()) {		// converts char to integer
+				if (stack.back() != 'L') {		// L = Lamda state
+					switch (stack.back()) {		// converts char to integer state
 					case 'E':state = 0; break;
 					case 'Q':state = 1; break;
 					case 'T':state = 2; break;
@@ -73,34 +70,33 @@ int main()
 					case '$':col = 7; break;
 					default: col = 8;		//is used for any letter not in the lanuage
 					}
-					//move to the new state
+					
+					stack.pop_back();				// removes last char from stack
+					stack += table[state][col];		// Push new states and/or terminals into stack
+					// display logic
 					cout << table[state][col] << "\n";
-					stack.pop_back();
-					stack += table[state][col];
 					cout << stack << "\t";
 				}
 				
-				else {
+				else {						// used when a Lamda state is reached
 					stack.pop_back();
 					cout << endl << stack << '\t'; 
 				}
-
-				//pop = stack.back();		// set pop to last char
-				//stack.pop_back();		// remove last char
-				cout << stack.back() << "\t";
-				if (stack.back() == '~')break;
+				
+				cout << stack.back() << "\t";	// display next poped state
+				if (stack.back() == '~')break;	// exits loop if in a null state
 			}
-			if (stack.back() == '~')break;
-			stack.pop_back();
+			if (stack.back() == '~')break;		// exits loop if in a null state
+			stack.pop_back();					// removes last char
 			
-			cout << stack << endl;
+			cout << endl;
 			i++;
 		}
-		//output the result to the user
+		//output result user
 		if (w[i] != '$' && stack.back() != '$')
-			cout << " is not accepted";
+			cout << "Not accepted";
 		else
-			cout << " is accepted";
+			cout << "Accepted";
 		
 		cout << "\n\nContinue (y/n): "; cin >> again;
 	} while (again == 'y');
