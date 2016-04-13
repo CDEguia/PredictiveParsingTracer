@@ -74,8 +74,10 @@ int main()
 					//move to the new state
 					cout << table[state][col] << "\n";
 					stack += table[state][col];
+					cout << stack << "\t";
 				}
-				cout << stack << "\t";
+				else { cout << endl << stack<<'\t'; }
+				
 				pop = stack.back();		// set pop to last char
 				stack.pop_back();		// remove last char
 				cout << pop << "\t";
@@ -84,7 +86,7 @@ int main()
 			i++;
 		}
 		//output the result to the user
-		if (w[i]!='$' && pop != '$')
+		if (w[i] != '$' && pop != '$')
 			cout << " is not accepted\n";
 		else
 			cout << " is accepted\n";
