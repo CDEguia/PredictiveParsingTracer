@@ -31,19 +31,21 @@ int main()
 	//table of the language
 	//the starting state is 0
 	string table[5][8] = { { "QT","","","","","QT","","" },{ "","QT+","QT-","","","","L","L" },{ "RF","","","","","RF","","" },{ "","L","L","RF*","RF-","","L","L" },{ "i","","","","",")E(","","" } };
-	//w will hold the string of the individual words to check
-	string w, stack = "$E";
-		char pop;
-	cout << "Enter a equation ending with '$' i.e. (i+i)*i$ : "; cin >> w;
-	//loop through the words in the text file
 	
-		//initialize values		
+	char again;
+	do {
+		string w, stack = "$E";		//w will hold the string of the individual words to check
+		char pop;
+		cout << "Enter a equation ending with '$' i.e. (i+i)*i$ : "; cin >> w;
+		//loop through the words in the text file
+
+			//initialize values		
 		int i = 0, col, state = 0;
 		//will loop through the letters in the word until it encounters a '$'
 		while (w[i] != '$')
 		{
 			//print the word letter by letter to prevent printing the '$' at the end
-			cout <<"Read: "<< w[i] << endl;
+			cout << "\nRead: " << w[i] << endl;
 			cout << "Stack\tPoped\tPushed\n";
 			cout << stack << "\t";
 			pop = stack.back();		// set pop to last char
@@ -76,8 +78,8 @@ int main()
 					stack += table[state][col];
 					cout << stack << "\t";
 				}
-				else { cout << endl << stack<<'\t'; }
-				
+				else { cout << endl << stack << '\t'; }
+
 				pop = stack.back();		// set pop to last char
 				stack.pop_back();		// remove last char
 				cout << pop << "\t";
@@ -87,10 +89,12 @@ int main()
 		}
 		//output the result to the user
 		if (w[i] != '$' && pop != '$')
-			cout << " is not accepted\n";
+			cout << " is not accepted";
 		else
-			cout << " is accepted\n";
-
+			cout << " is accepted";
+		
+		cout << "\n\nContinue (y/n): "; cin >> again;
+	} while (again == 'y');
 	//terminate the program
 	system("pause");
 	return 0;
