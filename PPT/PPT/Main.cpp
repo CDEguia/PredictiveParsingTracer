@@ -84,4 +84,118 @@ int main()
 	return 0;
 }
 /*-----------------output---------------------
+Enter a equation ending with '$' i.e. (i+i)$ : (i+i)*i$
+
+Read: (
+Stack   Poped   Pushed
+$E      E       QT
+$QT     T       RF
+$QRF    F       )E(
+$QR)E(  (
+
+Read: i
+Stack   Poped   Pushed
+$QR)E   E       QT
+$QR)QT  T       RF
+$QR)QRF F       i
+$QR)QRi i
+
+Read: +
+Stack   Poped   Pushed
+$QR)QR  R       L
+$QR)QL  L
+$QR)Q   Q       QT+
+$QR)QT+ +
+
+Read: i
+Stack   Poped   Pushed
+$QR)QT  T       RF
+$QR)QRF F       i
+$QR)QRi i
+
+Read: )
+Stack   Poped   Pushed
+$QR)QR  R       L
+$QR)QL  L
+$QR)Q   Q       L
+$QR)L   L
+$QR)    )
+
+Read: *
+Stack   Poped   Pushed
+$QR     R       RF*
+$QRF*   *
+
+Read: i
+Stack   Poped   Pushed
+$QRF    F       i
+$QRi    i
+Accepted
+
+Continue (y/n): y
+Enter a equation ending with '$' i.e. (i+i)$ : i*(i+i)$
+
+Read: i
+Stack   Poped   Pushed
+$E      E       QT
+$QT     T       RF
+$QRF    F       i
+$QRi    i
+
+Read: *
+Stack   Poped   Pushed
+$QR     R       RF*
+$QRF*   *
+
+Read: (
+Stack   Poped   Pushed
+$QRF    F       )E(
+$QR)E(  (
+
+Read: i
+Stack   Poped   Pushed
+$QR)E   E       QT
+$QR)QT  T       RF
+$QR)QRF F       i
+$QR)QRi i
+
+Read: +
+Stack   Poped   Pushed
+$QR)QR  R       L
+$QR)QL  L
+$QR)Q   Q       QT+
+$QR)QT+ +
+
+Read: i
+Stack   Poped   Pushed
+$QR)QT  T       RF
+$QR)QRF F       i
+$QR)QRi i
+
+Read: )
+Stack   Poped   Pushed
+$QR)QR  R       L
+$QR)QL  L
+$QR)Q   Q       L
+$QR)L   L
+$QR)    )
+Accepted
+
+Continue (y/n): y
+Enter a equation ending with '$' i.e. (i+i)$ : i(i+i)$
+
+Read: i
+Stack   Poped   Pushed
+$E      E       QT
+$QT     T       RF
+$QRF    F       i
+$QRi    i
+
+Read: (
+Stack   Poped   Pushed
+$QR     R       ~
+$Q~     ~       Not accepted
+
+Continue (y/n): n
+Press any key to continue . . .
 --------------------------------------------*/
