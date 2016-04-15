@@ -1,5 +1,5 @@
 # PredictiveParsingTracer
-Using a Predictive Parsing Table to trace the input strings, and chow content of the stack after each match.
+Using a Predictive Parsing Table to trace input strings, and dispaly stack as it changes.
 
 |states	|	i|	+|	-|	*|	/|	(|	)|	$|~|
 |---|---|---|---|---|---|---|---|---|---|
