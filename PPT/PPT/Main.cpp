@@ -2,19 +2,20 @@
 //          Name		Jeremy Driesler & Candelario "Daniel" Eguia
 //          Course		CMPS-455
 //          Project		No. 8
-//			Part		No. 1
+//			Part		No. 2
 //          Due date	Mar. 15, 2015
 //          Professor	Ray Ahmadnia
 //
 // This program displays:
 /*	The trace of the input string and shows content of the stack after each match.
 -----------------Table---------------
-states	|	i	+	-	*	/	(	)	$
-E	0	|	TQ	~	~	~	~	TQ	~	~	
-Q	1	|	~	+TQ	-TQ	~	~	~	L	L
-T	2	|	FR	~	~	~	~	FR	~	~
-R	3	|	~	L	L	*FR	/FR	~	L	L
-F	4	|	i	~	~	~	~	(E)	L	L
+states	|	a	b	+	-	*	/	(	)	$	~
+S	0	|	a=E	~	~	~	~	~	~	~	~	~
+E	1	|	TD	TD	~	~	~	~	TD	~	~	~
+D	2	|	~	~	+TD	-TD	~	~	~	L	L	~
+T	3	|	FU	FU	~	~	~	~	FU	~	~	~
+U	4	|	~	~	L	L	*FU	/FU	~	L	L	~
+F	5	|	a	b	~	~	~	~	(E)	~	~	~
 ------------------------------------------------------------------------------------------*/
 #include <iostream>
 #include <string>
@@ -23,11 +24,14 @@ using namespace std;
 
 int main()
 {
-	string table[5][8] = { { "QT","~","~","~","~","QT","~","~" },{ "~","QT+","QT-","~","~","~","L","L" },{ "RF","~","~","~","~","RF","~","~" },{ "~","L","L","RF*","RF-","~","L","L" },{ "i","~","~","~","~",")E(","~","~" } };
+	string table[6][10] = { { "E=a","~","~","~","~","~","~","~","~","~" },
+	{ "DT","DT","~","~","~","~","DT","~","~","~" },{ "~","~","DT+","DT-","~","~","~","L","L","~" },
+	{ "UF","UF","~","~","~","~","UF","~","~","~" },{ "~","~","L","L","UF*","UF/","~","L","L","~" },
+	{ "a","b","~","~","~","~",")E(","~","~","~" } };
 	char again;
 	do {
-		string w, stack = "$E";		//w will hold input string
-		cout << "Enter a equation ending with '$' i.e. (i+i)$ : "; cin >> w;
+		string w, stack = "$S";		//w will hold input string
+		cout << "Enter a equation ending with '$' i.e. a=a$ : "; cin >> w;
 		// initialize values
 		int i = 0, col, state = 0;
 		//will loop through the letters in the word until it encounters a '$'
@@ -40,22 +44,24 @@ int main()
 			while ( stack.back() != w[i] ) {
 				if ( stack.back() != 'L' ) {		// L = Lamda state
 					switch ( stack.back() ) {		// converts char to integer state
-					case 'E':state = 0; break;
-					case 'Q':state = 1; break;
-					case 'T':state = 2; break;
-					case 'R':state = 3; break;
-					case 'F':state = 4; break;
+					case 'S':state = 0; break;
+					case 'E':state = 1; break;
+					case 'D':state = 2; break;
+					case 'T':state = 3; break;
+					case 'U':state = 4; break;
+					case 'F':state = 5; break;
 					}
 					switch ( w[i] ) {
-					case 'i':col = 0; break;
-					case '+':col = 1; break;
-					case '-':col = 2; break;
-					case '*':col = 3; break;
-					case '/':col = 4; break;
-					case '(':col = 5; break;
-					case ')':col = 6; break;
-					case '$':col = 7; break;
-					default: col = 8;		//is used for any letter not in the lanuage
+					case 'a':col = 0; break;
+					case 'b':col = 1; break;
+					case '+':col = 2; break;
+					case '-':col = 3; break;
+					case '*':col = 4; break;
+					case '/':col = 5; break;
+					case '(':col = 6; break;
+					case ')':col = 7; break;
+					case '$':col = 8; break;
+					default: col = 9;		//is used for any letter not in the lanuage
 					}	
 					stack.pop_back();				// removes last char from stack
 					stack += table[state][col];		// Push new states / terminals
@@ -84,117 +90,172 @@ int main()
 	return 0;
 }
 /*-----------------output---------------------
-Enter a equation ending with '$' i.e. (i+i)$ : (i+i)*i$
+Enter a equation ending with '$' i.e. a=a$ : a=(a+a)*b$
+
+Read: a
+Stack   Poped   Pushed
+$S      S       E=a
+$E=a    a
+
+Read: =
+Stack   Poped   Pushed
+$E=     =
 
 Read: (
 Stack   Poped   Pushed
-$E      E       QT
-$QT     T       RF
-$QRF    F       )E(
-$QR)E(  (
+$E      E       DT
+$DT     T       UF
+$DUF    F       )E(
+$DU)E(  (
 
-Read: i
+Read: a
 Stack   Poped   Pushed
-$QR)E   E       QT
-$QR)QT  T       RF
-$QR)QRF F       i
-$QR)QRi i
+$DU)E   E       DT
+$DU)DT  T       UF
+$DU)DUF F       a
+$DU)DUa a
 
 Read: +
 Stack   Poped   Pushed
-$QR)QR  R       L
-$QR)QL  L
-$QR)Q   Q       QT+
-$QR)QT+ +
+$DU)DU  U       L
+$DU)DL  L
+$DU)D   D       DT+
+$DU)DT+ +
 
-Read: i
+Read: a
 Stack   Poped   Pushed
-$QR)QT  T       RF
-$QR)QRF F       i
-$QR)QRi i
+$DU)DT  T       UF
+$DU)DUF F       a
+$DU)DUa a
 
 Read: )
 Stack   Poped   Pushed
-$QR)QR  R       L
-$QR)QL  L
-$QR)Q   Q       L
-$QR)L   L
-$QR)    )
+$DU)DU  U       L
+$DU)DL  L
+$DU)D   D       L
+$DU)L   L
+$DU)    )
 
 Read: *
 Stack   Poped   Pushed
-$QR     R       RF*
-$QRF*   *
+$DU     U       UF*
+$DUF*   *
 
-Read: i
+Read: b
 Stack   Poped   Pushed
-$QRF    F       i
-$QRi    i
+$DUF    F       b
+$DUb    b
 Accepted
 
 Continue (y/n): y
-Enter a equation ending with '$' i.e. (i+i)$ : i*(i+i)$
+Enter a equation ending with '$' i.e. a=a$ : a=a*(b-a)$
 
-Read: i
+Read: a
 Stack   Poped   Pushed
-$E      E       QT
-$QT     T       RF
-$QRF    F       i
-$QRi    i
+$S      S       E=a
+$E=a    a
+
+Read: =
+Stack   Poped   Pushed
+$E=     =
+
+Read: a
+Stack   Poped   Pushed
+$E      E       DT
+$DT     T       UF
+$DUF    F       a
+$DUa    a
 
 Read: *
 Stack   Poped   Pushed
-$QR     R       RF*
-$QRF*   *
+$DU     U       UF*
+$DUF*   *
 
 Read: (
 Stack   Poped   Pushed
-$QRF    F       )E(
-$QR)E(  (
+$DUF    F       )E(
+$DU)E(  (
 
-Read: i
+Read: b
 Stack   Poped   Pushed
-$QR)E   E       QT
-$QR)QT  T       RF
-$QR)QRF F       i
-$QR)QRi i
+$DU)E   E       DT
+$DU)DT  T       UF
+$DU)DUF F       b
+$DU)DUb b
+
+Read: -
+Stack   Poped   Pushed
+$DU)DU  U       L
+$DU)DL  L
+$DU)D   D       DT-
+$DU)DT- -
+
+Read: a
+Stack   Poped   Pushed
+$DU)DT  T       UF
+$DU)DUF F       a
+$DU)DUa a
+
+Read: )
+Stack   Poped   Pushed
+$DU)DU  U       L
+$DU)DL  L
+$DU)D   D       L
+$DU)L   L
+$DU)    )
+Accepted
+
+Continue (y/n): y
+Enter a equation ending with '$' i.e. a=a$ : a=(a+a)b$
+
+Read: a
+Stack   Poped   Pushed
+$S      S       E=a
+$E=a    a
+
+Read: =
+Stack   Poped   Pushed
+$E=     =
+
+Read: (
+Stack   Poped   Pushed
+$E      E       DT
+$DT     T       UF
+$DUF    F       )E(
+$DU)E(  (
+
+Read: a
+Stack   Poped   Pushed
+$DU)E   E       DT
+$DU)DT  T       UF
+$DU)DUF F       a
+$DU)DUa a
 
 Read: +
 Stack   Poped   Pushed
-$QR)QR  R       L
-$QR)QL  L
-$QR)Q   Q       QT+
-$QR)QT+ +
+$DU)DU  U       L
+$DU)DL  L
+$DU)D   D       DT+
+$DU)DT+ +
 
-Read: i
+Read: a
 Stack   Poped   Pushed
-$QR)QT  T       RF
-$QR)QRF F       i
-$QR)QRi i
+$DU)DT  T       UF
+$DU)DUF F       a
+$DU)DUa a
 
 Read: )
 Stack   Poped   Pushed
-$QR)QR  R       L
-$QR)QL  L
-$QR)Q   Q       L
-$QR)L   L
-$QR)    )
-Accepted
+$DU)DU  U       L
+$DU)DL  L
+$DU)D   D       L
+$DU)L   L
+$DU)    )
 
-Continue (y/n): y
-Enter a equation ending with '$' i.e. (i+i)$ : i(i+i)$
-
-Read: i
+Read: b
 Stack   Poped   Pushed
-$E      E       QT
-$QT     T       RF
-$QRF    F       i
-$QRi    i
-
-Read: (
-Stack   Poped   Pushed
-$QR     R       ~
-$Q~     ~       Not accepted
+$DU     U       ~
+$D~     ~       Not accepted
 
 Continue (y/n): n
 Press any key to continue . . .
